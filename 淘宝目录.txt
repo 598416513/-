@@ -1,0 +1,207 @@
+ css   
+ 
+ html
+    account_success.html  付款成功页面
+    address.html           地址页面
+    details.html           详情页面
+    evaluate.html         评论页面
+    login.html            登录页面
+    option.html           分类页
+    order.html            订单页
+    order_details.html    订单详情页
+    passworld.html        修改密码页
+    personal.html        个人设置
+    search.html          搜索页
+    shopping.html        购买页
+    sign.html            注册页
+
+ js
+
+ index.html
+
+--------------------------------------------------
+ index.html 主页：
+ 1.设置 rem
+ 2.轮播图（swiper）
+ 3.滚动屏幕 头部样式发生改变
+ 4.获取 分类取元素的 index属性值 保存在sessionStorage.setItem('num',num);并且页面跳转到 分类页 html/option.html
+ 5.倒计时
+ 6.红色圆缩放
+--------------------------------------------------
+ option.html  分类页：
+
+ 1.封装 getData(start,classify)方法 获取后台数据
+
+   接口地址：http://47.92.37.168/supermarket/data/get_commodity.php
+   请求方式：post
+   请求参数：data:{'start':start,'classify':classify}  start 默认值0
+   请求返回值 [{count:"615",id:"41",img:"img6_3.jpg",name:"亿滋果珍果味柠   400g",price:"14.90},{},{}....]
+
+ 2.导航栏滚动效果
+ 3.向上滑动更新数据
+ 4.向左滑动切换数据
+ 5.点击产品跳转到详情页 details.html(把商品id传给详情页)
+ 6.点击商品购物车按钮，把产品加入购物车
+ 7.左右滑屏切换 （选做）
+ 8.点击顶部购物车按钮，跳到购物车页面 shopping.html/login.html
+ 9.取消默认事/取消冒泡 （兼容函数）
+  添加购物车接口：
+ type:"get"
+ url:"http://47.92.37.168/supermarket/data/my_commodity_car.php"
+ async:true
+ data:{'user_phone':username,
+         'commodity_id':id,  //$(this).parents('li').attr('id'),
+	'count':1}
+	,dataType:"jsonp"
+	jsonp:"callback"
+	success:function(data){}
+--------------------------------------------------
+ login.html  登录页面：
+ 1.登录后台请求
+    type:"post"
+    url:"http://47.92.37.168/supermarket/data/login.php"
+    async:true
+    data:{user_phone:telephone,user_pass_word:password}
+    dataType:"jsonp"
+    jsonp:"callback"
+    jsonpCallback:"success_JsonpCallback" 
+    success:function(data){ //data:{msg:'success',info:{user_name:'',user_phone:'110',user_sex:'',user_addr:'北京市东城区-朝阳门东大街-xxx路',user_psd:'110'}}
+----------------------------------------------------
+   sign.html    注册页:
+  1.手机号码失去焦点 正则验证
+  2.密码失去焦点    正则验证
+  3.点击注册按钮  后台接口
+   type:"post"
+   url:"http://47.92.37.168/supermarket/data/register.php"
+   async:true
+   data:{'user_phone':phone,'user_pass_word':pass}
+   dataType:"jsonp"
+   jsonp:"callback"
+   jsonpCallback:"success_JsonpCallback"
+   success:function(data){// data:{msg:'error',reason:'该手机已经被注册'} }
+-------------------------------------------------------------------
+detail.html  详情页
+
+1.选项卡
+2.//获取商品详情
+   
+type:"get"
+url:"http://47.92.37.168/supermarket/data/get_commodity_info.php"
+async:true
+data:{id:pro_id}
+dataType:"json"
+success:function(data){}
+3.//获取好评、中评、差评数量
+type:"get"
+url:"http://47.92.37.168/supermarket/data/get_commodity_evluate.php"
+async:true
+data:{commodity_id:pro_id}
+dataType:"jsonp"
+jsonp:"callback"
+complete:function(){}
+3.获取评价信息
+ type:"get"
+ url:"http://47.92.37.168/supermarket/data/get_commodity_evluate_info.php"
+ async:true
+ data:{'commodity_id':pro_id,'start':start}
+ dataType:"jsonp"
+ jsonp:"callback"
+ success:function(data){}
+4.//向上滑动更新数据
+5.//好评、中评、差评点击切换
+6.//加入购物车
+  type:"get"
+  url:"http://47.92.37.168/supermarket/data/my_commodity_car.php"
+  async:true
+  data:{ 'user_phone':username, 'commodity_id':pro_id,'count':1
+  dataType:"jsonp"
+  jsonp:"callback"
+  success:function(data){}
+7.//点击购物车按钮，跳到购物车页面
+-------------------------------------------------------------------
+ shopping.html        购买页
+
+1.//点击天猫超市展开，收起商品列表
+2.//获取购物车产品数量
+        type:"get"
+	,url:"http://47.92.37.168/supermarket/data/get_commodity_car.php"
+	,async:true
+	,data:{'user_phone':username}
+	,dataType:"jsonp"
+	 ,jsonp:"callback"
+	,success:function(data){}
+3.//获取产品图片、名称、单价的函数
+                 type:"get"
+		,url:"http://47.92.37.168/supermarket/data/get_commodity_info.php"
+		,async:true
+		,data:{'id':pro_id}
+		,dataType:"jsonp"
+		,jsonp:"callback"
+		,success:function(data){}
+4.//计算购物车商品总价函数
+5.//封装函数-全选
+6.//删除产品
+7.//删除商品时点击确定按钮   //删除数据表里的商品
+                 type:"get"
+		,url:"http://47.92.37.168/supermarket/data/my_commodity_delete_car.php"
+		,async:true
+		,data:{
+			'commodity_id':pro_id,
+			'user_phone':username
+		}
+		,dataType:"jsonp"
+		,jsonp:"callback"
+		,success:function(data){}
+8.//删除商品时点击取消按钮
+9.//点击加按钮
+10.//点击减按钮
+11.//点击加减修改数据库数据-函数
+                type:"get"
+		,url:"http://47.92.37.168/supermarket/data/my_commodity_update_car.php"
+		,async:true
+		,data:{
+			'user_phone':username,
+			'commodity_id':_this.parents('.shop-content').attr('id'),
+			'count':num
+		}
+		,dataType:"jsonp"
+		,jsonp:"callback"
+		,success:function(data){}
+12.//产品数量获取焦点时得到商品数量
+13.//产品数量失去焦点时改变前后台数据
+14.//点击结算按钮，跳转到结算页面
+
+     判断是否有收获信息，若有则发送请求
+     type:"get"
+     url:"http://47.92.37.168/supermarket/data/my_commodity_order.php"
+     async:true
+     data:{'commodity_id':$(this).attr('id'),//单品id
+	    'user_phone':username,//账号
+	    'count':$(this).find('.shop-content-right .pro_num').text(),//单品数量
+	    'user_name':arr[3],//收货人姓名
+	    'user_addr':arr[0]+arr[1]+arr[2],//收货地址
+	    'consignee_phone':arr[4]//收货人手机号}
+	    ,dataType:"jsonp"
+	    ,jsonp:"callback"
+	    ,success:function(data){// 若成功跳转 account_success.html  付款成功页面}
+     
+      
+    若没有则跳转 address.html
+-----------------------------------------------------------
+address.html           地址页面
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
